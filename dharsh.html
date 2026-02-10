@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Love Story ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #0b1d3a, #000);
+  color: #fff;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+section {
+  padding: 70px 20px;
+}
+
+/* IMAGE */
+.image-box img {
+  width: 100%;
+  max-width: 280px;
+  margin: 10px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+  animation: zoomSlow 18s ease-in-out infinite;
+}
+
+@keyframes zoomSlow {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* CHAT */
+.chat {
+  background-color: white;
+  padding: 16px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: auto;
+  text-align: left;
+  font-size: 13px;
+}
+
+.chat p { color: red; }
+.chat b { color: black; }
+
+.love-text,
+.love-histext {
+  font-family: 'Comic Sans MS', 'Trebuchet MS', cursive;
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+.start-text {
+  text-align: left;
+  margin-left: 450px; /* adjust if needed */
+}
+
+.time-text {
+  font-family: Copperplate, Papyrus, fantasy;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* LINK */
+.valentine-link {
+  cursor: pointer;
+  color: #ff4d6d;
+  text-decoration: none;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+/* POPUP */
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-box {
+  background: rgba(30,30,30,0.95);
+  padding: 35px;
+  border-radius: 20px;
+  width: 340px;
+  color: white;
+}
+
+.popup-box button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* STARS */
+.star {
+  position: fixed;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: floatStar linear infinite;
+}
+
+@keyframes floatStar {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- STARS -->
+<script>
+for (let i = 0; i < 40; i++) {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.width = star.style.height = Math.random() * 2 + 1 + "px";
+  star.style.left = Math.random() * 100 + "vw";
+  star.style.animationDuration = 20 + Math.random() * 20 + "s";
+  document.body.appendChild(star);
+}
+</script>
+
+<section>
+  <h1>Our Love Story ❤️</h1>
+  <p>Even miles apart, our hearts meet every night.<br><br>
+    A long-distance relationship, late night texts,
+    trust, patience, and love that never sleeps.
+  </p>
+</section>
+
+<section class="image-box">
+<p class="start-text"> <b>Starts like..</p>
+  <img src="image1.png">
+  <img src="image2.png">
+<p class="time-text">3:48 AM — when the world sleeps, we talk.</p>
+<br>
+<a href="#" class="valentine-link" onclick="openPopup();return false;">
+    Happy Valentine’s Day ❤️
+  </a>
+</section>
+
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <h3>💖 1000 Days 💖</h3>
+    <h4>Hey hey!! Smile 😊</h4>
+
+    <p>
+      It’s not about Valentine’s Day 💞<br><br>
+      1000 days of our love relationship
+    </p>
+
+    <section class="chat">
+      <p>
+        <b>3:47 am</b><br>
+        <b>You:</b>
+        <span class="love-histext" id="hisText"></span>
+      </p>
+
+      <p>
+        <b>3:48 am</b><br>
+        <b>Me:</b>
+        <span class="love-text" id="herText"></span>
+      </p>
+    </section>
+
+    <br>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop>
+  <source src="minalgal_kuthadum.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* TEXT CONTENT */
+const hisMessage = "Direct ah sollalame";
+const herMessage =
+"Na ungala life long santhosama pathukalam ni iruken 🤭\nNee sona mathiri.. koodavae life longggg..";
+
+/* TYPE EFFECT */
+function typeText(el, text, speed, done) {
+  let i = 0;
+  el.textContent = "";
+  function typing() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    } else if (done) {
+      done();
+    }
+  }
+  typing();
+}
+
+const music = document.getElementById("bgMusic");
+
+function openPopup() {
+  document.getElementById("popup").style.display = "flex";
+  music.volume = 0.5;
+  music.play();
+
+  const hisEl = document.getElementById("hisText");
+  const herEl = document.getElementById("herText");
+
+  hisEl.textContent = "";
+  herEl.textContent = "";
+
+  typeText(hisEl, hisMessage, 60, () => {
+    typeText(herEl, herMessage, 45);
+  });
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+  music.pause();
+}
+</script>
+
+</body>
+</html>
