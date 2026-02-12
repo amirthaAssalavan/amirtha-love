@@ -190,15 +190,16 @@ footer {
   position: fixed;
   inset: 0;
 
-  background:
+  /* background:
     radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 1px, transparent 2px),
     radial-gradient(circle at 70% 60%, rgba(255,255,255,0.1) 1px, transparent 2px),
     radial-gradient(circle at 40% 80%, rgba(255,255,255,0.2) 1px, transparent 2px),
     radial-gradient(circle at 80% 20%, rgba(255,255,255,0.12) 1px, transparent 2px),
     radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 1px, transparent 2px),
-    linear-gradient(to bottom, #0b1d3a, #000);
-
-  backdrop-filter: blur(6px);
+    linear-gradient(to bottom, #0b1d3a, #000); */
+      background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 999;
   align-items: center;
   justify-content: center;
@@ -214,14 +215,12 @@ footer {
   ); */
 
 .popup-box {
-  background: rgba(20, 20, 40, 0.75);
-  backdrop-filter: blur(15px);
-}
+  background: rgba(255, 255, 255, 0.08);   /* transparent glass */
 
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
 
-  border: 1px solid rgba(255, 182, 193, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 
   padding: 40px;
   border-radius: 25px;
@@ -234,22 +233,24 @@ footer {
   overflow: hidden;
 
   box-shadow:
-    0 0 40px rgba(255, 105, 180, 0.25),
-    0 20px 60px rgba(0, 0, 0, 0.5);
+    0 0 60px rgba(255, 105, 180, 0.25),
+    0 25px 80px rgba(0, 0, 0, 0.6);
+
   animation: floatPopup 4s ease-in-out infinite,
              heartbeatGlow 3.5s ease-in-out infinite;
 }
+
 
 .popup-box::before {
   content: "";
   position: absolute;
   inset: -2px;
   border-radius: 28px;
-  background: linear-gradient(
+   background: linear-gradient(
     45deg,
-    #ff9ac4,
-    #ff4d8d,
-    #ff9ac4
+    rgba(255,255,255,0.3),
+    rgba(255,255,255,0.1),
+    rgba(255,255,255,0.3)
   );
   background-size: 200% 200%;
   z-index: -1;
@@ -741,27 +742,6 @@ display: block;
 }
 
 
-.popup::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(2px 2px at 10% 20%, white, transparent),
-    radial-gradient(2px 2px at 30% 70%, white, transparent),
-    radial-gradient(2px 2px at 60% 40%, white, transparent),
-    radial-gradient(2px 2px at 80% 80%, white, transparent),
-    radial-gradient(2px 2px at 50% 10%, white, transparent);
-
-  animation: twinkle 6s ease-in-out infinite alternate;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-@keyframes twinkle {
-  0% { opacity: 0.3; }
-  100% { opacity: 0.9; }
-}
-
 /* Crown */
 @keyframes royalBreathGlow {
   0% {
@@ -824,4 +804,90 @@ display: block;
     padding: 20px;
   }
 
+}
+.life-image-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  z-index: 2000;
+}
+
+.life-image-wrapper.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#lifeImage {
+  width: 320px;
+  max-width: 90%;
+  border-radius: 25px;
+  box-shadow:
+    0 0 40px rgba(255,105,180,0.4),
+    0 20px 60px rgba(0,0,0,0.6);
+
+  transform: scale(0.6);
+  transition: transform 0.6s ease;
+}
+
+.life-image-wrapper.show #lifeImage {
+  transform: scale(1);
+}
+
+
+.life-text-overlay {
+    pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  background: rgba(0,0,0,0.85);
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 9998;
+}
+
+.life-text-overlay.show {
+  opacity: 1;
+    pointer-events: auto;
+}
+
+.life-image-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  border-radius: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.9);
+  z-index: 9999;
+}
+
+.life-image-wrapper.show {
+  display: flex;
+}
+
+.life-image-wrapper img {
+  /* max-width: 80%; */
+  border-radius: 20px;
 }
