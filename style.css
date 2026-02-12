@@ -29,6 +29,10 @@ body {
   overflow-x: hidden;
 }
 
+footer {
+    background: linear-gradient(circle at top, #000001, #000);   /* choose your color */
+  padding: 30px 0;
+}
 
 /* IMAGE */
 .image-box img {
@@ -786,3 +790,35 @@ display: block;
   animation: royalBreathGlow 3.5s ease-in-out infinite;
 }
 
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+   .intro-wrapper {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    gap: 20px;
+  }
+ .intro-box {
+    width: 100% !important;
+    max-width: 95%;
+    text-align: center !important;
+  }
+
+  .intro-box:first-child,
+  .intro-box:last-child {
+    text-align: center !important;
+    
+  .valentine-link {
+    font-size: 24px;
+  }
+
+  #centerTitle {
+    font-size: 26px;
+  }
+
+  .popup-box {
+    padding: 20px;
+  }
+
+}
