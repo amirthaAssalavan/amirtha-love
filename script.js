@@ -481,3 +481,78 @@ function flowerShower(box) {
     setTimeout(() => petal.remove(), 3000);
   }
 }
+
+
+function showLifeImage() {
+  const wrapper = document.getElementById("lifeImageWrapper");
+  wrapper.classList.add("show");
+
+  launchPoppers();
+}
+
+function launchPoppers() {
+  const wrapper = document.getElementById("lifeImageWrapper");
+
+  for (let i = 0; i < 80; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+
+    confetti.style.left = Math.random() * 100 + "%";
+    confetti.style.top = "-20px";
+
+    confetti.style.background =
+      `hsl(${Math.random() * 360}, 100%, 60%)`;
+
+    confetti.style.animationDuration =
+      (Math.random() * 2 + 1) + "s";
+
+    wrapper.appendChild(confetti);
+
+    setTimeout(() => {
+      confetti.remove();
+    }, 3000);
+     document.getElementById("lifeImageWrapper").onclick = function() {
+    this.classList.remove("show");
+  }
+  }
+}
+
+
+  const oldMusic = document.getElementById("bgSong");
+  const newMusic = document.getElementById("newMusic");
+  const textOverlay = document.getElementById("lifeTextOverlay");
+  const imageWrapper = document.getElementById("lifeImageWrapper");
+
+  function showLifeImage() {
+
+    // Stop old music
+    oldMusic.pause();
+
+    // Show text
+    textOverlay.classList.add("show");
+
+    // Start new music
+    newMusic.currentTime = 0;
+    newMusic.play();
+
+    // After 3 seconds → fade text and show image
+    setTimeout(() => {
+      textOverlay.classList.remove("show");
+
+      setTimeout(() => {
+        imageWrapper.classList.add("show");
+      }, 10);
+
+    }, 4000);
+  }
+
+  // Close image
+  imageWrapper.addEventListener("click", function() {
+    imageWrapper.classList.remove("show");
+
+    // Stop new music
+    newMusic.pause();
+
+    // Resume old music
+    oldMusic.play();
+  });
