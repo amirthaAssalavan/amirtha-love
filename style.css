@@ -791,15 +791,17 @@ display: block;
 }
 
 /* MOBILE RESPONSIVE */
+/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
 
-   .intro-wrapper {
+  .intro-wrapper {
     display: flex;
     flex-direction: column !important;
     align-items: center;
     gap: 20px;
   }
- .intro-box {
+
+  .intro-box {
     width: 100% !important;
     max-width: 95%;
     text-align: center !important;
@@ -808,7 +810,8 @@ display: block;
   .intro-box:first-child,
   .intro-box:last-child {
     text-align: center !important;
-    
+  }
+
   .valentine-link {
     font-size: 24px;
   }
