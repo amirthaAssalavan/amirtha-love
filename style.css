@@ -831,8 +831,9 @@ display: block;
 }
 
 #lifeImage {
-  width: 320px;
-  max-width: 90%;
+  width: 80vw;          /* 80% of screen width */
+  max-width: 1000px;    /* optional max size */
+  height: auto;
   border-radius: 25px;
   box-shadow:
     0 0 40px rgba(255,105,180,0.4),
@@ -895,4 +896,5 @@ display: block;
   /* max-width: 80%; */
   border-radius: 20px;
 }
+
 
