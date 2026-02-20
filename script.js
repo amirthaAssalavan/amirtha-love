@@ -143,6 +143,11 @@ flowerShower(firstBox);
 // 🖼 Then reveal 1x1 after delay
 setTimeout(() => {
   firstBox.classList.add("active");
+
+firstBox.scrollIntoView({
+  behavior: "smooth",
+  block: "center"
+});
 }, 1500);
 
 
@@ -433,7 +438,14 @@ document.addEventListener("DOMContentLoaded", function () {
         // 🖼 Then reveal next image
         setTimeout(() => {
           nextBox.classList.add("active");
-        }, 800);
+
+          // 🔽 AUTO SCROLL TO NEXT IMAGE
+          nextBox.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+
+}, 800);
 
       }
 
