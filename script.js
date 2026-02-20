@@ -68,8 +68,6 @@ window.addEventListener("scroll", () => {
   });
 });
 
-
-
 function loveExplosion(e) {
   const popupBox = document.querySelector(".popup-box");
   const rect = popupBox.getBoundingClientRect();
@@ -77,7 +75,7 @@ function loveExplosion(e) {
   const clickX = e.clientX - rect.left;
   const clickY = e.clientY - rect.top;
 
-  // Create multiple tiny hearts
+  // 💖 Heart burst animation
   for (let i = 0; i < 12; i++) {
     const heart = document.createElement("div");
     heart.className = "love-spark";
@@ -86,7 +84,6 @@ function loveExplosion(e) {
     heart.style.left = clickX + "px";
     heart.style.top = clickY + "px";
 
-    // Random burst direction
     const angle = Math.random() * 2 * Math.PI;
     const distance = Math.random() * 60 + 30;
 
@@ -101,70 +98,41 @@ function loveExplosion(e) {
     setTimeout(() => heart.remove(), 800);
   }
 
-  // Close popup slightly after animation
+  // ⏳ After heart animation
   setTimeout(() => {
-    closePopup();
 
-    const boxes = document.querySelectorAll(".intro-box");
+    closePopup(); // ✅ Only one close
 
-    // Show only first box initially
-    boxes[0].classList.add("active");
-
-
-    // SHOW INTRO SECTION AFTER POPUP CLOSES
     const intro = document.getElementById("intro");
     intro.style.display = "block";
 
     setTimeout(() => {
       intro.style.opacity = "1";
-      // Close popup slightly after animation
+
+      const boxes = document.querySelectorAll(".intro-box");
+
+      // Reset all images
+      boxes.forEach(box => box.classList.remove("active"));
+
+      const firstBox = boxes[0];
+
+      // 🌸 Flower burst
+      flowerShower(firstBox);
+
+      // 🖼 Reveal first image after delay
       setTimeout(() => {
-        closePopup();
+        firstBox.classList.add("active");
 
-        const intro = document.getElementById("intro");
-        intro.style.display = "block";
+        firstBox.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
 
-        setTimeout(() => {
-          intro.style.opacity = "1";
+      }, 1200);
 
-          // ⏳ WAIT BEFORE FIRST IMAGE APPEARS
-          setTimeout(() => {
-
-            const boxes = document.querySelectorAll(".intro-box");
-
-            // Reset everything
-            boxes.forEach(box => box.classList.remove("active"));
-
-const firstBox = boxes[0];
-
-// 🌸 Flower burst FIRST on 1x1 area
-flowerShower(firstBox);
-
-// 🖼 Then reveal 1x1 after delay
-setTimeout(() => {
-  firstBox.classList.add("active");
-
-firstBox.scrollIntoView({
-  behavior: "smooth",
-  block: "center"
-});
-}, 1500);
-
-
-            intro.scrollIntoView({ behavior: "smooth" });
-
-          }, 1200); // ← change this time (1200 = 1.2 seconds pause)
-
-        }, 500);
-
-      }, 600);
-
-
-      intro.scrollIntoView({ behavior: "smooth" });
-    }, 3500);
+    }, 400);
 
   }, 600);
-
 }
 
 
@@ -416,6 +384,7 @@ document.addEventListener("click", function () {
     });
   }
 }, { once: true });
+
 
 document.addEventListener("DOMContentLoaded", function () {
 
