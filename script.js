@@ -76,7 +76,7 @@ function loveExplosion(e) {
   const clickY = e.clientY - rect.top;
 
   // 💖 Heart burst animation
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 20; i++) {
     const heart = document.createElement("div");
     heart.className = "love-spark";
     heart.innerHTML = "💖";
@@ -215,34 +215,6 @@ function fireworkEffect() {
     setTimeout(() => spark.remove(), 2500);
   }
 }
-
-
-// function heartPoppers() {
-//   const box = document.querySelector(".popup-box");
-//   const rect = box.getBoundingClientRect();
-
-//   for (let i = 0; i < 25; i++) {
-//     const heart = document.createElement("div");
-//     heart.className = "heart";
-//     heart.innerHTML = "💖";
-
-//     // Start from random bottom position
-//     heart.style.left = Math.random() * rect.width + "px";
-//     heart.style.top = rect.height - 40 + "px";
-
-//     // Random float direction
-//     const floatX = (Math.random() - 0.5) * 200;
-//     const floatY = - (Math.random() * 200 + 100);
-
-//     heart.style.setProperty("--hx", floatX + "px");
-//     heart.style.setProperty("--hy", floatY + "px");
-
-//     box.appendChild(heart);
-
-//     setTimeout(() => heart.remove(), 6000);
-//   }
-// }
-
 
 function bigHeartClose() {
   const box = document.querySelector(".popup-box");
@@ -414,7 +386,7 @@ document.addEventListener("DOMContentLoaded", function () {
             block: "center"
           });
 
-}, 800);
+        }, 800);
 
       }
 
@@ -463,20 +435,18 @@ function flowerShower(box) {
   }
 }
 
-
-function showLifeImage() {
-  const wrapper = document.getElementById("lifeImageWrapper");
-  wrapper.classList.add("show");
-
-  launchPoppers();
-}
+let popperInterval;
 
 function launchPoppers() {
-  const wrapper = document.getElementById("lifeImageWrapper");
+  const wrapper = document.getElementById("lifeConfetti");
 
-  for (let i = 0; i < 80; i++) {
+  // Stop old interval if already running
+  clearInterval(popperInterval);
+
+  popperInterval = setInterval(() => {
+
     const confetti = document.createElement("div");
-    confetti.className = "confetti";
+    confetti.className = "life-confetti";
 
     confetti.style.left = Math.random() * 100 + "%";
     confetti.style.top = "-20px";
@@ -485,55 +455,78 @@ function launchPoppers() {
       `hsl(${Math.random() * 360}, 100%, 60%)`;
 
     confetti.style.animationDuration =
-      (Math.random() * 2 + 1) + "s";
+      (Math.random() * 2 + 3) + "s";
 
     wrapper.appendChild(confetti);
 
     setTimeout(() => {
       confetti.remove();
-    }, 3000);
-     document.getElementById("lifeImageWrapper").onclick = function() {
-    this.classList.remove("show");
-  }
-  }
+    }, 5000);
+
+  }, 60); // smooth flow
+}
+
+const imageWrapper = document.getElementById("lifeImageWrapper");
+const oldMusic = document.getElementById("bgSong");
+const newMusic = document.getElementById("newMusic");
+const textOverlay = document.getElementById("lifeTextOverlay");
+
+function showLifeImage() {
+
+  oldMusic.pause();
+
+  textOverlay.classList.add("show");
+
+  newMusic.currentTime = 0;
+  newMusic.play();
+
+  setTimeout(() => {
+    textOverlay.classList.remove("show");
+
+    setTimeout(() => {
+      imageWrapper.classList.add("show");
+      launchPoppers();
+    }, 10);
+
+  }, 4000);
 }
 
 
-  const oldMusic = document.getElementById("bgSong");
-  const newMusic = document.getElementById("newMusic");
-  const textOverlay = document.getElementById("lifeTextOverlay");
-  const imageWrapper = document.getElementById("lifeImageWrapper");
+imageWrapper.addEventListener("click", function () {
 
-  function showLifeImage() {
+  imageWrapper.classList.remove("show");
 
-    // Stop old music
-    oldMusic.pause();
+  clearInterval(popperInterval); // ✅ STOP POPPERS
 
-    // Show text
-    textOverlay.classList.add("show");
+  newMusic.pause();
+  oldMusic.play();
+    startRoseShower();
+});
 
-    // Start new music
-    newMusic.currentTime = 0;
-    newMusic.play();
+let roseInterval;
 
-    // After 3 seconds → fade text and show image
+function startRoseShower() {
+
+  clearInterval(roseInterval);
+
+  roseInterval = setInterval(() => {
+
+    const petal = document.createElement("img");
+    petal.src = "rosepetal.png";  // your image
+    petal.className = "rose-petal";
+
+    petal.style.left = Math.random() * 100 + "vw";
+
+    petal.style.animationDuration =
+      (5 + Math.random() * 5) + "s";
+
+    petal.style.transform += ` rotate(${Math.random()*360}deg)`;
+
+    document.body.appendChild(petal);
+
     setTimeout(() => {
-      textOverlay.classList.remove("show");
+      petal.remove();
+    }, 10000);
 
-      setTimeout(() => {
-        imageWrapper.classList.add("show");
-      }, 10);
-
-    }, 4000);
-  }
-
-  // Close image
-  imageWrapper.addEventListener("click", function() {
-    imageWrapper.classList.remove("show");
-
-    // Stop new music
-    newMusic.pause();
-
-    // Resume old music
-    oldMusic.play();
-  });
+  }, 200);
+}
