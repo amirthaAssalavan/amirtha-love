@@ -1,25 +1,41 @@
-let shootingInterval;
-
-
 /* Create stars */
-for (let i = 0; i < 150; i++) {
-  const star = document.createElement("div");
-  star.className = "star";
+/* Optimized Star Creation */
+function createStars(count = 120) {
+  const fragment = document.createDocumentFragment();
 
-  const size = Math.random() * 2 + 1;
-  star.style.width = size + "px";
-  star.style.height = size + "px";
+  for (let i = 0; i < count; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
 
-  star.style.left = Math.random() * 100 + "vw";
-  star.style.top = Math.random() * 100 + "vh";
+    const size = Math.random() * 2 + 1;
 
-  star.style.animationDuration = 15 + Math.random() * 20 + "s";
-  star.style.opacity = Math.random();
+    star.style.cssText = `
+      width:${size}px;
+      height:${size}px;
+      left:${Math.random() * 100}vw;
+      top:${Math.random() * 100}vh;
+      animation-duration:${15 + Math.random() * 20}s, ${2 + Math.random() * 3}s;
+      // animation-delay: 3s, 0s;
+      animation-name: floatStar, twinkle;
+      animation-timing-function: linear, ease-in-out;
+      animation-iteration-count: infinite, infinite;
 
-  document.body.appendChild(star);
+      opacity:${Math.random()};
+    `;
+
+    fragment.appendChild(star);
+  }
+
+  document.body.appendChild(fragment);
 }
 
+const isMobile = window.innerWidth < 768;
 
+if (isMobile) {
+  createStars(120);  // smooth on mobile
+} else {
+  createStars(400);  // rich sky on desktop
+}
 
 /* Scroll function */
 function goToStart() {
@@ -58,14 +74,24 @@ function typeText(el, text, speed, done) {
 }
 
 const parallaxBoxes = document.querySelectorAll(".parallax");
+let ticking = false;
 
-window.addEventListener("scroll", () => {
+function updateParallax() {
   const scrollY = window.scrollY;
+  const speed = 0.08;
 
   parallaxBoxes.forEach(box => {
-    const speed = 0.08; // slower + smoother
     box.style.transform = `translateY(${scrollY * speed}px)`;
   });
+
+  ticking = false;
+}
+
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    window.requestAnimationFrame(updateParallax);
+    ticking = true;
+  }
 });
 
 function loveExplosion(e) {
@@ -228,6 +254,11 @@ function bigHeartClose() {
   setTimeout(() => heart.remove(), 2500);
 }
 
+function safePlay(audio) {
+  if (audio && audio.paused) {
+    audio.play().catch(() => { });
+  }
+}
 
 function openPopup() {
   const popup = document.getElementById("popup");
@@ -296,21 +327,14 @@ function openPopup() {
 
     m1.volume = 0.5;
     m2.volume = 0.3;
-    m1.play();
-    m2.play();
+    safePlay(m1);
+    safePlay(m2);
 
     const hisEl = document.getElementById("hisText");
     const herEl = document.getElementById("herText");
 
     hisEl.textContent = "";
     herEl.textContent = "";
-
-    //   let heartInterval = setInterval(heartPoppers, 800);
-
-    // setTimeout(() => {
-    // 	clearInterval(heartInterval);
-    // }, 6000);
-    // 💕 when typing starts
 
     typeText(hisEl, hisMessage, 60, () => {
       typeText(herEl, herMessage, 45);
@@ -396,74 +420,73 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
 function flowerShower(box) {
-
   const flowers = ["🌸", "🌺", "💮"];
+  const rect = box.getBoundingClientRect();
 
-  const centerX = box.offsetWidth / 2;
-  const centerY = box.offsetHeight / 2;
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  const maxDistance = Math.max(rect.width, rect.height) * 1.2;
 
-  for (let i = 0; i < 40; i++) {
+  const fragment = document.createDocumentFragment();
 
+  for (let i = 0; i < 30; i++) {
     const petal = document.createElement("div");
     petal.className = "flower-petal";
     petal.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
 
-    petal.style.left = centerX + "px";
-    petal.style.top = centerY + "px";
-
-    petal.style.fontSize = (25 + Math.random() * 12) + "px";
-
-    // 360° random direction
     const angle = Math.random() * 2 * Math.PI;
-
-    // Distance spread
-    const maxDistance = Math.max(box.offsetWidth, box.offsetHeight) * 1.2;
-
     const distance = Math.random() * maxDistance;
 
+    petal.style.left = centerX + "px";
+    petal.style.top = centerY + "px";
+    petal.style.fontSize = (25 + Math.random() * 12) + "px";
+    petal.style.setProperty("--moveX", Math.cos(angle) * distance + "px");
+    petal.style.setProperty("--moveY", Math.sin(angle) * distance + "px");
 
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
-
-    petal.style.setProperty("--moveX", moveX + "px");
-    petal.style.setProperty("--moveY", moveY + "px");
-
-    box.appendChild(petal);
+    fragment.appendChild(petal);
 
     setTimeout(() => petal.remove(), 3000);
   }
+
+  box.appendChild(fragment);
 }
 
-let popperInterval;
+
+let lifeRunning = false;
 
 function launchPoppers() {
   const wrapper = document.getElementById("lifeConfetti");
+  lifeRunning = true;
 
-  // Stop old interval if already running
-  clearInterval(popperInterval);
-
-  popperInterval = setInterval(() => {
+  function spawn() {
+    if (!lifeRunning) return;
 
     const confetti = document.createElement("div");
     confetti.className = "life-confetti";
 
     confetti.style.left = Math.random() * 100 + "%";
-    confetti.style.top = "-20px";
-
     confetti.style.background =
-      `hsl(${Math.random() * 360}, 100%, 60%)`;
+      `hsl(${Math.random() * 360},100%,60%)`;
 
     confetti.style.animationDuration =
       (Math.random() * 2 + 3) + "s";
 
     wrapper.appendChild(confetti);
 
-    setTimeout(() => {
-      confetti.remove();
-    }, 5000);
+    setTimeout(() => confetti.remove(), 5000);
 
-  }, 60); // smooth flow
+    requestAnimationFrame(() => {
+      setTimeout(spawn, 80);
+    });
+  }
+
+  spawn();
+}
+
+function stopPoppers() {
+  lifeRunning = false;
 }
 
 const imageWrapper = document.getElementById("lifeImageWrapper");
@@ -486,6 +509,9 @@ function showLifeImage() {
     setTimeout(() => {
       imageWrapper.classList.add("show");
       launchPoppers();
+       setTimeout(() => {
+    startRoseShower();
+  }, 2000);
     }, 10);
 
   }, 4000);
@@ -496,11 +522,12 @@ imageWrapper.addEventListener("click", function () {
 
   imageWrapper.classList.remove("show");
 
-  clearInterval(popperInterval); // ✅ STOP POPPERS
+  stopPoppers(); // ✅ STOP POPPERS
+  stopRoseShower(); // ✅ STOP Roseshower
 
   newMusic.pause();
   oldMusic.play();
-    startRoseShower();
+  startRoseShower();
 });
 
 let roseInterval;
@@ -520,7 +547,7 @@ function startRoseShower() {
     petal.style.animationDuration =
       (5 + Math.random() * 5) + "s";
 
-    petal.style.transform += ` rotate(${Math.random()*360}deg)`;
+    petal.style.transform += ` rotate(${Math.random() * 360}deg)`;
 
     document.body.appendChild(petal);
 
@@ -529,4 +556,14 @@ function startRoseShower() {
     }, 10000);
 
   }, 200);
+
+  // 👇 Spawn immediately
+  spawnRose();
+
+  // 👇 Then continue interval
+  roseInterval = setInterval(spawnRose, 200);
+}
+
+function stopRoseShower() {
+  clearInterval(roseInterval);
 }

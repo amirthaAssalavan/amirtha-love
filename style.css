@@ -22,6 +22,14 @@ h2 {
   margin: 20px 0 15px;
 }
 
+section:first-of-type p {
+  /* font-family: "Trebuchet MS", sans-serif;
+  font-weight: 100;
+  font-size: 15px; */
+  line-height: 1.2;
+    /* opacity: 0.85; */
+}
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -33,7 +41,6 @@ body {
 
 footer {
   background: linear-gradient(circle at top, #000001, #000);
-  /* choose your color */
   padding: 30px 0;
 }
 
@@ -704,25 +711,31 @@ html {
   position: fixed;
   background: white;
   border-radius: 50%;
-  opacity: 0.6;
   pointer-events: none;
   z-index: -1;
-  /* push behind content */
-  animation: floatStar linear infinite;
+  will-change: opacity, transform;
+  transform: translateZ(0);
+
+  /* twinkle animation */
+  animation: twinkle linear infinite;
 }
 
+@keyframes twinkle {
+  0%   { opacity: 0.2; }
+  25%  { opacity: 1; }
+  50%  { opacity: 0.4; }
+  75%  { opacity: 0.9; }
+  100% { opacity: 0.2; }
+}
 
 @keyframes floatStar {
   from {
-    transform: translateY(100vh);
+    transform: translateY(0);
   }
-
   to {
-    transform: translateY(-10vh);
+    transform: translateY(-100vh);
   }
 }
-
-
 /* POPUP MAGIC BACKGROUND */
 .popup::before {
   content: "";
@@ -834,6 +847,8 @@ html {
 .life-image-wrapper.show {
   opacity: 1;
   pointer-events: auto;
+  display: flex;
+
 }
 
 #lifeImage {
@@ -879,11 +894,6 @@ html {
 .life-text-overlay.show {
   opacity: 1;
   pointer-events: auto;
-}
-
-
-.life-image-wrapper.show {
-  display: flex;
 }
 
 .life-image-wrapper img {
@@ -972,3 +982,17 @@ html {
     opacity: 0.9;
   }
 }
+
+
+/* 🚀 GPU Performance Boost */
+.star,
+.confetti,
+.spark,
+.love-spark,
+.life-confetti,
+.rose-petal,
+.flower-petal {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
