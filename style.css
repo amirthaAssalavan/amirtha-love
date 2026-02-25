@@ -995,35 +995,3 @@ html {
   will-change: transform, opacity;
   transform: translateZ(0);
 }
-
-.insta-section {
-  margin: 60px 0;
-  text-align: center;
-}
-
-.insta-section h3 {
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: #ffcce0;
-  letter-spacing: 1px;
-}
-
-.insta-link {
-  display: inline-block;
-  margin: 10px 15px;
-  padding: 10px 20px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-
-  background: linear-gradient(45deg, #fd1d1d, #e1306c, #f77737);
-  color: white;
-
-  transition: all 0.3s ease;
-}
-
-.insta-link:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(225, 48, 108, 0.6);
-}
