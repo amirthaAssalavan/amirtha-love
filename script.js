@@ -15,7 +15,6 @@ function createStars(count = 120) {
       left:${Math.random() * 100}vw;
       top:${Math.random() * 100}vh;
       animation-duration:${15 + Math.random() * 20}s, ${2 + Math.random() * 3}s;
-      // animation-delay: 3s, 0s;
       animation-name: floatStar, twinkle;
       animation-timing-function: linear, ease-in-out;
       animation-iteration-count: infinite, infinite;
@@ -43,14 +42,6 @@ function goToStart() {
     behavior: "smooth"
   });
 }
-
-function playMusic() {
-  document.getElementById("music1").play();
-  document.getElementById("music2").play();
-}
-
-// Play after user clicks anywhere
-
 
 /* TEXT CONTENT */
 const hisMessage = "Direct ah sollalame";
@@ -524,10 +515,10 @@ imageWrapper.addEventListener("click", function () {
 
   stopPoppers(); // ✅ STOP POPPERS
   stopRoseShower(); // ✅ STOP Roseshower
-
   newMusic.pause();
   oldMusic.play();
   startRoseShower();
+  startFinalCountdown();
 });
 
 let roseInterval;
@@ -556,14 +547,50 @@ function startRoseShower() {
     }, 10000);
 
   }, 200);
-
-  // 👇 Spawn immediately
-  spawnRose();
-
-  // 👇 Then continue interval
-  roseInterval = setInterval(spawnRose, 200);
 }
 
 function stopRoseShower() {
   clearInterval(roseInterval);
 }
+
+// ================= FINAL SCENE CONTROL =================
+
+const finalScene = document.getElementById("finalScene");
+let idleTimer;
+let finalTimer;
+
+// Show Final Scene
+function showFinalScene() {
+  finalScene.classList.add("show");
+}
+
+// Hide Final Scene
+function hideFinalScene() {
+  finalScene.classList.remove("show");
+}
+
+// Start 8 sec timer after life image closes
+function startFinalCountdown() {
+  clearTimeout(finalTimer);
+  finalTimer = setTimeout(() => {
+    showFinalScene();
+  }, 8000);
+}
+
+// Idle detection (15 sec)
+function resetIdleTimer() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    showFinalScene();
+  }, 15000);
+}
+
+// Reset idle on activity
+["click", "mousemove", "keydown", "scroll"].forEach(event => {
+  document.addEventListener(event, resetIdleTimer);
+});
+
+// Clicking final scene closes it
+finalScene.addEventListener("click", function () {
+  hideFinalScene();
+});

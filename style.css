@@ -995,3 +995,84 @@ html {
   will-change: transform, opacity;
   transform: translateZ(0);
 }
+
+.thousand-days {
+  margin: 80px 0 60px;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-align: center;
+
+  position: relative;
+  z-index: 5;   /* ensures it stays above normal content */
+
+  background: linear-gradient(90deg, #ff758f, #ff2e63, #ff758f);
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: shineText 4s linear infinite;
+}
+
+@keyframes shineText {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+body {
+  padding-bottom: 100px;
+}
+
+/* FINAL ENDING SCENE */
+.final-scene {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #0b1d3a, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2s ease;
+
+  z-index: 5000;
+}
+
+.final-scene.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.final-text {
+  font-size: 40px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  line-height: 1.6;
+
+  background: linear-gradient(90deg, #ff758f, #ff2e63, #ff758f);
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: shineFinal 6s linear infinite, fadeUp 2s ease forwards;
+}
+
+@keyframes shineFinal {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes fadeUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
